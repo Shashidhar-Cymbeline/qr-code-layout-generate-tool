@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "qr-layout-core": "workspace:*"
+    "qr-layout-core": "*"
   },
   "devDependencies": {
     "typescript": "^5.3.3",

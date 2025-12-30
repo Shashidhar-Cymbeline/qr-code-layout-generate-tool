@@ -45,6 +45,16 @@ let isEditMode = true;
 // Printer is sufficient as we hold state locally
 const printer = new StickerPrinter();
 
+// --- Utilities ---
+function debounce(func: Function, wait: number) {
+    let timeout: any;
+    return (...args: any[]) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func(...args), wait);
+    };
+}
+const debouncedUpdatePreview = debounce(updatePreview, 300);
+
 // --- DOM Elements ---
 const canvas = document.getElementById("preview-canvas") as HTMLCanvasElement;
 const dataInput = document.getElementById("data-input") as HTMLTextAreaElement;
@@ -114,7 +124,7 @@ async function updatePreview() {
 // --- Layout Modifiers ---
 function updateLayoutProp(key: keyof StickerLayout, value: any) {
     (currentLayout as any)[key] = value;
-    updatePreview();
+    debouncedUpdatePreview();
 }
 
 function addElement(type: ElementType) {
@@ -224,7 +234,7 @@ function renderPropPanel(id: string) {
             el[field] = parseFloat((e.target as HTMLInputElement).value);
             renderElementsList(); // update overview
             updateEditorOverlay();
-            updatePreview();
+            debouncedUpdatePreview();
         };
         grp.appendChild(inp);
         posRow.appendChild(grp);
@@ -242,13 +252,13 @@ function renderPropPanel(id: string) {
         createInput("Font Size (pt)", el.style.fontSize || 12, "number", (val) => {
             if (!el.style) el.style = {};
             el.style.fontSize = val;
-            updatePreview();
+            debouncedUpdatePreview();
         });
 
         createInput("Color", el.style.color || "#000000", "text", (val) => {
             if (!el.style) el.style = {};
             el.style.color = val;
-            updatePreview();
+            debouncedUpdatePreview();
         });
 
         // Align
@@ -499,6 +509,7 @@ function endDrag() {
     document.removeEventListener("mouseup", endDrag);
     renderElementsList();
     if (selectedElementId) renderPropPanel(selectedElementId);
+    updatePreview();
 }
 
 // --- Listeners ---
