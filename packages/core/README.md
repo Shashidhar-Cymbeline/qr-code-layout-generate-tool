@@ -3,7 +3,7 @@
 A powerful, framework-agnostic engine for designing and printing QR code sticker layouts. Create pixel-perfect labels with text and QR codes, and export them to **PNG**, **PDF**, or **ZPL** (Zebra Programming Language).
 
 > [!NOTE]
-> This package is the core rendering engine. for a visual drag-and-drop designer, check out the [QR Layout Workspace](https://github.com/shashi089/qr-code-layout-generate-tool).
+> This package is the core rendering engine. For a visual drag-and-drop designer and a live React example, visit our **[Live Demo](https://qr-layout-design-react-demo.netlify.app/)**.
 
 ## Features
 
@@ -11,6 +11,11 @@ A powerful, framework-agnostic engine for designing and printing QR code sticker
 -  **Multiple Formats**: Export to Canvas (preview), PNG/JPEG (image), PDF (print), or ZPL (industrial thermal printers).
 -  **Dynamic Content**: Use variable placeholders (e.g., `{{name}}`, `{{sku}}`) to batch generate unique stickers.
 -  **Lightweight**: Minimal dependencies. PDF export is optional to keep bundle size small.
+
+## Live Demo & Examples
+
+- **[Interactive React Demo](https://qr-layout-design-react-demo.netlify.app/)**: A full-featured designer built with this package.
+- **[React Demo Source Code](https://github.com/shashi089/qr-code-layout-generate-tool/tree/example/demo-react)**: Reference implementation for monorepo usage.
 
 ## Installation
 
