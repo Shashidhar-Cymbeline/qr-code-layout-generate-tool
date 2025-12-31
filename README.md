@@ -2,7 +2,7 @@
 
 This repo contains two packages:
 
-- `@shashi089/qrlayout-core`: the rendering/printing engine (PNG, PDF, ZPL).
+- `qrlayout-core`: the rendering/printing engine (PNG, PDF, ZPL).
 - `@shashi089/qrlayout-ui`: the browser editor UI (drag/drop layout designer).
 
 ## Prerequisites
@@ -42,7 +42,7 @@ npm run build
 ### Core (library)
 
 ```ts
-import { StickerPrinter, type StickerLayout } from "@shashi089/qrlayout-core";
+import { StickerPrinter, type StickerLayout } from "qrlayout-core";
 
 const layout: StickerLayout = {
   id: "layout-1",

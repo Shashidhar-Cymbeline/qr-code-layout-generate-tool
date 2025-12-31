@@ -1,8 +1,14 @@
 {
-  "name": "@shashi089/qrlayout-core",
+  "name": "qrlayout-core",
   "version": "1.0.0",
   "description": "QR sticker layout builder/renderer/exporter core",
   "author": "Shashidhar Naik <shashidharnaik8@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shashi089/qr-code-layout-generate-tool.git",
+    "directory": "packages/core"
+  },
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -19,7 +25,8 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "publishConfig": {
     "access": "public"

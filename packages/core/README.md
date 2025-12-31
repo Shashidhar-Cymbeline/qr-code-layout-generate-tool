@@ -1,17 +1,20 @@
-# @qrlayout/core
+# qrlayout-core
 
 Print-ready QR label layout engine. Build a label template with text/QR/image blocks, then export as PNG, PDF, or ZPL.
+
+> [!NOTE]
+> This package was previously published as `@shashi089/qrlayout-core`. Please update your dependencies to `qrlayout-core`.
 
 ## Install
 
 ```bash
-npm install @qrlayout/core
+npm install qrlayout-core
 ```
 
 ## Quick start
 
 ```ts
-import { StickerPrinter, type StickerLayout } from "@shashi089/qrlayout-core";
+import { StickerPrinter, type StickerLayout } from "qrlayout-core";
 
 const layout: StickerLayout = {
   id: "layout-1",
@@ -93,7 +96,7 @@ interface StickerLayout {
 PDF export is isolated in a separate entry so users can avoid the `jspdf` dependency unless needed.
 
 ```ts
-import { exportToPDF } from "@shashi089/qrlayout-core/pdf";
+import { exportToPDF } from "qrlayout-core/pdf";
 ```
 
 If `jspdf` is not installed, `StickerPrinter.exportToPDF()` will throw a clear error.

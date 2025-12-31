@@ -1,6 +1,11 @@
 {
   "name": "qr-layout-workspace",
   "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shashi089/qr-code-layout-generate-tool.git"
+  },
   "workspaces": [
     "packages/*"
   ],
