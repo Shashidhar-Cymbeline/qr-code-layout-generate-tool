@@ -1,7 +1,22 @@
 {
   "name": "qrlayout-core",
   "version": "1.0.4",
-  "description": "QR sticker layout builder/renderer/exporter core",
+  "description": "QR code layout builder, renderer, and exporter for stickers, labels, and PDFs",
+  "keywords": [
+    "qr",
+    "qrcode",
+    "qr-code",
+    "qr code",
+    "layout",
+    "sticker",
+    "label",
+    "generator",
+    "renderer",
+    "pdf",
+    "zpl",
+    "barcode",
+    "thermal-printer"
+  ],
   "author": "Shashidhar Naik <shashidharnaik8@gmail.com>",
   "license": "MIT",
   "repository": {
