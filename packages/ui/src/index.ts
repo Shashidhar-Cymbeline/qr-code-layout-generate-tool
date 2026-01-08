@@ -93,6 +93,16 @@ export class QRLayoutDesigner {
     private renderTemplate() {
         this.container.classList.add("qrlayout-designer");
         this.container.innerHTML = `
+        <header>
+            <div data-el="header-left"></div>
+            <div style="display: flex; gap: 12px; align-items: center;">
+                <button class="btn btn-icon btn-outline" data-action="toggle-theme" title="Toggle Dark Mode">
+                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                </button>
+                <button class="btn btn-primary" data-action="save">Save Layout</button>
+            </div>
+        </header>
         <div class="main-container">
             <div class="edit-view" style="display: flex; flex: 1; height: 100%;">
                 <!-- LEFT SIDEBAR: CONFIG & ELEMENTS -->
@@ -235,7 +245,16 @@ export class QRLayoutDesigner {
         this.container.querySelector('[data-action="toggle-theme"]')?.addEventListener('click', (e) => {
             this.isDarkMode = !this.isDarkMode;
             this.container.classList.toggle("dark-mode", this.isDarkMode);
-            (e.target as HTMLElement).innerText = this.isDarkMode ? "Light Mode" : "Dark Mode";
+            const btn = (e.currentTarget as HTMLElement);
+            const sun = btn.querySelector('.sun-icon') as HTMLElement;
+            const moon = btn.querySelector('.moon-icon') as HTMLElement;
+            if (this.isDarkMode) {
+                sun.style.display = 'block';
+                moon.style.display = 'none';
+            } else {
+                sun.style.display = 'none';
+                moon.style.display = 'block';
+            }
         });
 
         this.container.querySelector('[data-action="export-json"]')?.addEventListener('click', () => {
