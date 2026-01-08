@@ -1,41 +1,32 @@
 import { StickerPrinter, StickerLayout, StickerElement } from "qrlayout-core";
 import "./styles.css";
 
-const ENTITY_SCHEMAS: Record<string, { label: string; fields: { name: string; label: string }[]; sampleData: any }> = {
-    employee: {
-        label: "Employee",
-        fields: [
-            { name: "name", label: "Full Name" },
-            { name: "employeeId", label: "Employee ID" },
-            { name: "designation", label: "Designation" },
-            { name: "place", label: "Location" }
-        ],
-        sampleData: { name: "Rajesh Sharma", employeeId: "EMP-101", designation: "Architect", place: "Mumbai" }
-    },
-    vendor: {
-        label: "Vendor",
-        fields: [
-            { name: "name", label: "Company Name" },
-            { name: "vendorId", label: "Vendor ID" },
-            { name: "category", label: "Category" }
-        ],
-        sampleData: { name: "ACME Corp", vendorId: "V-202", category: "Supplies" }
-    }
-};
-
 interface DesignerLayout extends StickerLayout {
     targetEntity?: string;
+}
+
+export interface EntityField {
+    name: string;
+    label: string;
+}
+
+export interface EntitySchema {
+    label: string;
+    fields: EntityField[];
+    sampleData: any;
 }
 
 export interface DesignerOptions {
     element: HTMLElement;
     initialLayout?: StickerLayout;
+    entitySchemas?: Record<string, EntitySchema>;
     onSave?: (layout: StickerLayout) => void;
 }
 
 export class QRLayoutDesigner {
     private container: HTMLElement;
     private currentLayout: DesignerLayout;
+    private entitySchemas: Record<string, EntitySchema>;
     private selectedElementId: string | null = null;
     private isDarkMode = false;
     private pxPerUnit = 1;
@@ -44,6 +35,7 @@ export class QRLayoutDesigner {
 
     // DOM Elements
     private canvas!: HTMLCanvasElement;
+
     private editorOverlay!: HTMLDivElement;
     private elementsContainer!: HTMLDivElement;
     private propertyPanel!: HTMLDivElement;
@@ -68,20 +60,18 @@ export class QRLayoutDesigner {
         this.container = options.element;
         this.printer = new StickerPrinter();
         this.onSaveCallback = options.onSave;
+        this.entitySchemas = options.entitySchemas || {};
 
-        // Default Layout
+        // Default Layout if not provided
         this.currentLayout = (options.initialLayout as DesignerLayout) || {
             id: "layout-" + Date.now(),
             name: "New Layout",
-            targetEntity: "employee",
+            targetEntity: "",
             width: 100,
             height: 60,
             unit: "mm",
             backgroundColor: "#ffffff",
-            elements: [
-                { id: "t1", type: "text", x: 5, y: 5, w: 90, h: 8, content: "VISITOR PASS", style: { textAlign: "center", fontWeight: "bold" } },
-                { id: "q1", type: "qr", x: 35, y: 15, w: 30, h: 30, content: "{{employeeId}}" }
-            ]
+            elements: []
         };
 
         this.init();
@@ -90,6 +80,7 @@ export class QRLayoutDesigner {
     private init() {
         this.renderTemplate();
         this.cacheDOM();
+        this.renderEntityOptions(); // New method to populate select
         this.syncInputsFromLayout();
         this.bindEvents();
         this.renderElementsList();
@@ -123,8 +114,7 @@ export class QRLayoutDesigner {
                             <label>Target Entity</label>
                             <select data-input="entity">
                                 <option value="">Select Entity...</option>
-                                <option value="employee">Employee</option>
-                                <option value="vendor">Vendor</option>
+                                <!-- Populated dynamically -->
                             </select>
                         </div>
                         <div class="form-group">
@@ -221,11 +211,28 @@ export class QRLayoutDesigner {
         };
     }
 
+    private renderEntityOptions() {
+        const select = this.inputs.entity;
+        // Keep the first default option "Select Entity..."
+        while (select.options.length > 1) {
+            select.remove(1);
+        }
+
+        Object.keys(this.entitySchemas).forEach(key => {
+            const schema = this.entitySchemas[key];
+            const option = document.createElement("option");
+            option.value = key;
+            option.text = schema.label || key;
+            select.add(option);
+        });
+    }
+
     private syncInputsFromLayout() {
         this.inputs.entity.value = this.currentLayout.targetEntity || "";
         this.inputs.name.value = this.currentLayout.name;
-        this.inputs.width.value = this.currentLayout.width.toFixed(2);
-        this.inputs.height.value = this.currentLayout.height.toFixed(2);
+        // Updated: Removed .toFixed(2) to show clean integers like 100 instead of 100.00
+        this.inputs.width.value = String(this.currentLayout.width);
+        this.inputs.height.value = String(this.currentLayout.height);
         this.inputs.unit.value = this.currentLayout.unit;
         this.inputs.labelWidth.innerText = `Width (${this.currentLayout.unit})`;
         this.inputs.labelHeight.innerText = `Height (${this.currentLayout.unit})`;
@@ -320,9 +327,9 @@ export class QRLayoutDesigner {
     public async updatePreview() {
         if (!this.canvas || !this.currentLayout) return;
 
-        // Use sample data based on entity
-        const sampleData = (this.currentLayout.targetEntity && ENTITY_SCHEMAS[this.currentLayout.targetEntity])
-            ? ENTITY_SCHEMAS[this.currentLayout.targetEntity].sampleData
+        // Use sample data based on entity and provided schemas
+        const sampleData = (this.currentLayout.targetEntity && this.entitySchemas[this.currentLayout.targetEntity])
+            ? this.entitySchemas[this.currentLayout.targetEntity].sampleData
             : {};
 
         await this.printer.renderToCanvas(this.currentLayout, sampleData, this.canvas);
@@ -382,6 +389,10 @@ export class QRLayoutDesigner {
         this.propertyPanel.style.display = "block";
         this.propContent.innerHTML = `
             <div class="form-group">
+                ${el.type === 'qr' ? `
+                <label>Field Separator</label>
+                <input type="text" id="prop-qr-separator" placeholder="e.g. | or -" value="${el.qrSeparator || ''}">
+                ` : ''}
                 <label>Content</label>
                 <textarea data-prop="content-val" rows="2">${el.content}</textarea>
                 <div class="field-buttons" data-el="field-suggestions"></div>
@@ -428,9 +439,9 @@ export class QRLayoutDesigner {
             ` : ''}
         `;
 
-        // Suggestions
+        // Suggestions from Props (using this.entitySchemas)
         const suggestions = this.propContent.querySelector('[data-el="field-suggestions"]');
-        const entitySchema = this.currentLayout.targetEntity ? ENTITY_SCHEMAS[this.currentLayout.targetEntity] : null;
+        const entitySchema = this.currentLayout.targetEntity ? this.entitySchemas[this.currentLayout.targetEntity] : null;
 
         if (entitySchema && suggestions) {
             entitySchema.fields.forEach(f => {
@@ -447,6 +458,14 @@ export class QRLayoutDesigner {
         }
 
         // Listeners for props
+        const sepInput = this.propContent.querySelector("#prop-qr-separator");
+        if (sepInput) {
+            sepInput.addEventListener("input", (e) => {
+                el.qrSeparator = (e.target as HTMLInputElement).value;
+                this.updatePreview();
+            });
+        }
+
         const link = (key: string, field: string, isNum = false, subField?: string) => {
             const input = this.propContent.querySelector(`[data-prop="${key}"]`);
             if (!input) return;

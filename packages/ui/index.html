@@ -31,20 +31,55 @@
   <script type="module">
     import { QRLayoutDesigner } from "/src/index.ts";
 
+    // Example Entity Schemas
+    const schemas = {
+      employee: {
+        label: "Employee",
+        fields: [
+          { name: "name", label: "Full Name" },
+          { name: "employeeId", label: "Employee ID" },
+          { name: "designation", label: "Designation" },
+          { name: "place", label: "Location" }
+        ],
+        sampleData: { name: "Rajesh Sharma", employeeId: "EMP-101", designation: "Software Engineer", place: "Bengaluru" }
+      },
+      product: {
+        label: "Product",
+        fields: [
+          { name: "title", label: "Product Title" },
+          { name: "sku", label: "SKU Code" },
+          { name: "price", label: "Price" }
+        ],
+        sampleData: { title: "Wireless Mouse", sku: "WM-889", price: "$25.00" }
+      }
+    };
+
+    // Example Initial Layout
+    const initialLayout = {
+      id: "layout-demo",
+      name: "Demo Badge",
+      targetEntity: "employee",
+      width: 100, // Number, not string
+      height: 60,
+      unit: "mm",
+      backgroundColor: "#ffffff",
+      elements: [
+        { id: "t1", type: "text", x: 5, y: 5, w: 90, h: 8, content: "EMPLOYEE ID", style: { textAlign: "center", fontWeight: "bold" } },
+        { id: "q1", type: "qr", x: 35, y: 15, w: 30, h: 30, content: "{{employeeId}}" },
+        { id: "t2", type: "text", x: 5, y: 48, w: 90, h: 8, content: "{{name}}", style: { textAlign: "center" } }
+      ]
+    };
+
     const app = document.getElementById("app");
     const designer = new QRLayoutDesigner({
       element: app,
+      entitySchemas: schemas,
+      initialLayout: initialLayout,
       onSave: (layout) => {
         console.log("Saved Layout:", layout);
         alert("Layout saved! Check console.");
       }
     });
-
-    // Example of cleanup (for testing)
-    // setTimeout(() => {
-    //   designer.destroy();
-    //   console.log("Destroyed");
-    // }, 10000);
   </script>
 </body>
 
