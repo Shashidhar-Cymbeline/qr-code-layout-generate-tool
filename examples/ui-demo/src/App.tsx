@@ -21,7 +21,7 @@ const SAMPLE_SCHEMAS: Record<string, EntitySchema> = {
       { name: "joinDate", label: "Join Date" },
     ],
     sampleData: {
-      fullName: "Alex Johnson",
+      fullName: "Pavan Kumbar",
       employeeId: "EMP-2024-889",
       department: "Engineering",
       joinDate: "2024-01-15"

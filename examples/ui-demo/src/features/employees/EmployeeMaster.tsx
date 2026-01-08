@@ -269,7 +269,7 @@ export function EmployeeMaster() {
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                                     value={formData.fullName || ''}
                                     onChange={e => setFormData({ ...formData, fullName: e.target.value })}
-                                    placeholder="e.g. Jane Doe"
+                                    placeholder="e.g. Kashinath Hosapeti"
                                 />
                             </div>
 
