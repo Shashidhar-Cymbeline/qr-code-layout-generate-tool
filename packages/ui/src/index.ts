@@ -1,6 +1,9 @@
 import { StickerPrinter, StickerLayout, StickerElement } from "qrlayout-core";
 import "./styles.css";
 
+export { StickerPrinter };
+export type { StickerLayout, StickerElement };
+
 interface DesignerLayout extends StickerLayout {
     targetEntity?: string;
 }
