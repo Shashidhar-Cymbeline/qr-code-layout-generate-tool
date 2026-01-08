@@ -36,9 +36,9 @@ It is structured as a monorepo consisting of a core rendering engine and a visua
 ## Use Cases
 
 - **Event Management**: Generate conference badges with unique attendee QR codes and names.
-- **Inventory Systems**: Print sticky labels for products with SKU, Description, and Scannable Barcodes/QRs.
+- **Inventory Systems**: Print sticky labels for products with SKU, Description, and Scannable QRs.
 - **Visitor Management**: Create temporary visitor passes on the fly.
-- **Logistics**: Generate industry-standard ZPL code for shipping labels to be sent directly to Zebra printers.
+- **Logistics**: Generate industry-standard ZPL code for shipping labels to be sent directly to printers.
 
 ## Installation & Usage
 
