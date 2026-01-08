@@ -17,9 +17,9 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/qrlayout-ui.js",
-      "require": "./dist/qrlayout-ui.umd.js",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/qrlayout-ui.umd.js"
     },
     "./style.css": "./dist/qrlayout-ui.css"
   },
