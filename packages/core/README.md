@@ -4,6 +4,8 @@ A powerful, framework-agnostic QR code layout engine for designing and printing 
 
 > [!NOTE]
 > This package is the core rendering engine. For a visual drag-and-drop designer and a live React example using both `qrlayout-core` and `qrlayout-ui`, visit our **[Live Demo](https://qr-layout-designer.netlify.app/)**.
+>  **[Live Demo 2](https://qr-layout-design-react-demo.netlify.app/)**.
+
 
 ## Features
 
